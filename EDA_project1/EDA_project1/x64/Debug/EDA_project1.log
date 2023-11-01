@@ -1,0 +1,38 @@
+﻿  EDA_project1.cpp
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(58,11): error C2143: syntax error: missing ';' before '<'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(58,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(58,36): error C2238: unexpected token(s) preceding ';'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(61,11): error C2143: syntax error: missing ';' before '<'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(61,11): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(61,37): error C2238: unexpected token(s) preceding ';'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(64,15): error C2143: syntax error: missing ';' before '<'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(64,15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(64,15): error C2059: syntax error: '<'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(87,11): error C2039: 'boardCells': is not a member of 'Board'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(57,16): message : see declaration of 'Board'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(87,24): error C2275: 'vector': expected an expression instead of a type
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(87,38): error C2062: type 'char' unexpected
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(90,11): error C2039: 'wordsOnBoard': is not a member of 'Board'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(57,16): message : see declaration of 'Board'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(99,30): error C2039: 'boardCells': is not a member of 'Board'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(57,16): message : see declaration of 'Board'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(103,30): error C2039: 'boardCells': is not a member of 'Board'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(57,16): message : see declaration of 'Board'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(106,34): error C2039: 'boardCells': is not a member of 'Board'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(57,16): message : see declaration of 'Board'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(107,23): error C2039: 'boardCells': is not a member of 'Board'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(57,16): message : see declaration of 'Board'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(123,30): error C2039: 'boardCells': is not a member of 'Board'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(57,16): message : see declaration of 'Board'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(129,46): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(129,46): error C2143: syntax error: missing ',' before '&'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(150,5): error C2065: 'WordList': undeclared identifier
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(150,14): error C2146: syntax error: missing ';' before identifier 'availableWords'
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(150,14): error C2065: 'availableWords': undeclared identifier
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(151,38): error C2065: 'availableWords': undeclared identifier
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(151,25): error C3861: 'readWordList': identifier not found
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(156,31): error C3861: 'readBoardSize': identifier not found
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(166,31): error C3861: 'readOption': identifier not found
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(170,21): error C3861: 'showHelp': identifier not found
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(173,40): error C2065: 'availableWords': undeclared identifier
+C:\Users\gabri\source\repos\EDA_project1\EDA_project1\EDA_project1.cpp(176,21): error C3861: 'removeWords': identifier not found
