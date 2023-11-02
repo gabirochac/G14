@@ -1,8 +1,17 @@
 //================================================================================
 // WORD GAMES - BOARD MAKER
+// 
+// GROUP 14
+// MEMBERS:
+//  Gabriele Rocha de Carvalho (up202302557)
+//  Hannia Valentina Espinoza Reyes (up202302569)
 //================================================================================ 
 
+
+
 #include <iostream>
+#include <string>
+#include <vector>
 //... other include directives 
 
 //-------------------------------------------------------------------------------- 
@@ -150,6 +159,32 @@ void saveBoard(const Board& board)
     // ... 
 }
 
+//read the word list
+void readWordList(string fileName)
+{
+    string fileName;
+    cout << "Please input the file name (including the extension)." << endl;
+    cin >> fileName;
+
+    inStream.open(fileName);
+
+    if (inStream.fail())
+    {
+        cerr << "Error openning" << fileName << "\n";
+    }
+}
+
+//================================================================================
+// Read the board size and return if it is in the range 
+bool readBoardSize(int numLins, int numCols) {
+    if (numLins > 6 && numLins < 16 && numCols > 6 && numCols < 16) {
+        return true;
+    }
+    else {
+        cout << RED << "Invalid size! Choose a size in the 7 - 15 range " << NO_COLOR;
+        return false;
+    }
+}
 
 //================================================================================
 //================================================================================
