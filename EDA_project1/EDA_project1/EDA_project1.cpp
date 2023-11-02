@@ -1,8 +1,14 @@
 //================================================================================
 // WORD GAMES - BOARD MAKER
+// 
+// GROUP 14
+// MEMBERS:
+//  Gabriele Rocha de Carvalho (up202302557)
+//  Hannia Valentina Espinoza Reyes (up202302569)
 //================================================================================ 
 
 #include <iostream>
+#include <vector>
 //... other include directives 
 
 //-------------------------------------------------------------------------------- 
@@ -150,13 +156,24 @@ void saveBoard(const Board& board)
     // ... 
 }
 
+//================================================================================
+// Read the board size and return if it is in the range 
+bool readBoardSize(int numLins, int numCols) {
+    if (numLins > 6 && numLins < 16 && numCols > 6 && numCols < 16) {
+        return true; 
+    }
+    else {
+        cout << RED << "Invalid size! Choose a size in the 7 - 15 range " << NO_COLOR;
+        return false; 
+    }
+}
+
 
 //================================================================================
 //================================================================================
 //================================================================================
 int main() 
 {
-    cout << "Hello world from Valentina";
     cout << "WORD GAMES - BOARD MAKER\n\n";
 
     WordList availableWords;
@@ -165,6 +182,8 @@ int main()
     if (numWords > 0) 
     {
         int numLins, numCols;
+        cout << " Board size (lines columns) ? ";
+        cin >> numLins >> numCols;
         bool validBoardSize = readBoardSize(numLins, numCols); //Create function to read the board size
 
         if (validBoardSize) 
