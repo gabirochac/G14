@@ -71,7 +71,7 @@ typedef vector<string> WordList;
 // HELP FUNCTIONS 
 
 //================================================================================
-// Converts all characters of ‘s’ to lowercase 
+// Converts all characters of ï¿½sï¿½ to lowercase 
 void tolowerStr(string& s) {
     for (auto& c : s)
         c = tolower(c);
@@ -79,7 +79,7 @@ void tolowerStr(string& s) {
 
 
 //================================================================================
-// Converts all characters of ‘s’ to uppercase 
+// Converts all characters of ï¿½sï¿½ to uppercase 
 void toupperStr(string& s) 
 {
     for (auto& c : s) c = toupper(c);
@@ -87,7 +87,7 @@ void toupperStr(string& s)
 
 
 //================================================================================
-// Initializes the board, all cells with ‘.’ 
+// Initializes the board, all cells with ï¿½.ï¿½ 
 void initBoard(Board& board, int numLins, int numCols) 
 {
     board.boardCells = vector<vector<char>>(numLins, vector<char>(numCols, '.'));
@@ -98,7 +98,7 @@ void initBoard(Board& board, int numLins, int numCols)
 
 
 //================================================================================
-// Shows the board ‘b’ on the screen
+// Shows the board ï¿½bï¿½ on the screen
 // The line and column identifying letters are colored in red 
 void showBoard(const Board& b) 
 {
@@ -120,9 +120,9 @@ void showBoard(const Board& b)
 
 
 //================================================================================
-// Gets a copy of the contents of a line, ‘lin’, of board ‘board’ 
-// and returns it through parameter ‘linContents’ 
-// The return value of the function is ‘true’ if ‘lin’ is valid, ‘false’ otherwise
+// Gets a copy of the contents of a line, ï¿½linï¿½, of board ï¿½boardï¿½ 
+// and returns it through parameter ï¿½linContentsï¿½ 
+// The return value of the function is ï¿½trueï¿½ if ï¿½linï¿½ is valid, ï¿½falseï¿½ otherwise
 bool getBoardLin(const Board& board, char lin, string& linContents) 
 {
     int linInt = lin - 'A';
@@ -139,12 +139,12 @@ bool getBoardLin(const Board& board, char lin, string& linContents)
 void insertWords(Board& board, const WordList& wordList) 
 {
     cout << "INSERTING WORDS ...\n\n";
-    // ... corpo da função
+    // ... corpo da funï¿½ï¿½o
 }
 
 
 //================================================================================
-// Saves ‘board’ into a text file 
+// Saves ï¿½boardï¿½ into a text file 
 void saveBoard(const Board& board) 
 {
     // ... 
@@ -156,6 +156,7 @@ void saveBoard(const Board& board)
 //================================================================================
 int main() 
 {
+    cout << "Hello world from Bernardo!";
     cout << "WORD GAMES - BOARD MAKER\n\n";
 
     WordList availableWords;
