@@ -156,6 +156,7 @@ void saveBoard(const Board& board)
 //================================================================================
 int main() 
 {
+    cout << "Hello world from Valentina";
     cout << "WORD GAMES - BOARD MAKER\n\n";
 
     WordList availableWords;
