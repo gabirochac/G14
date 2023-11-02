@@ -1,8 +1,15 @@
 //================================================================================
 // WORD GAMES - BOARD MAKER
+// 
+// GROUP 14
+// 
+// MEMBERS:
+//  Gabriele Rocha de Carvalho (202302557)
+//  Hannia Valentina Espinoza Reyes (202302569)
 //================================================================================ 
 
 #include <iostream>
+#include <vector>
 //... other include directives 
 
 //-------------------------------------------------------------------------------- 
@@ -139,13 +146,20 @@ bool getBoardLin(const Board& board, char lin, string& linContents)
 void insertWords(Board& board, const WordList& wordList) 
 {
     cout << "INSERTING WORDS ...\n\n";
-    // ... corpo da função
+    
 }
 
 
 //================================================================================
 // Saves ‘board’ into a text file 
 void saveBoard(const Board& board) 
+{
+    // ... 
+}
+
+//================================================================================
+// Read the size of the board
+void readBoardSize(int numLins, int numCols)
 {
     // ... 
 }
