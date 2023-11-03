@@ -145,10 +145,51 @@ bool getBoardLin(const Board& board, char lin, string& linContents)
 
 
 //================================================================================
-void insertWords(Board& board, const WordList& wordList) 
-{
+void insertWords(Board& board, const WordList& wordList) {
+    WordPosition position;
+    WordOnBoard word;
+
     cout << "INSERTING WORDS ...\n\n";
-    // ... corpo da função
+    showBoard(board);
+
+    while (true) {
+        cout << "Position(LcD / STOP) ? ";
+        cin >> position.lin >> position.col >> position.dir;
+
+        if (position.lin == 'STOP')
+            break;
+
+        bool isValid = true;  // Variable to check the validity of the position
+
+        // Check if the line is within the frame boundaries
+        if (position.lin < 'A' || position.lin >= ('A' + board.numLins)) {
+            cout << RED << "Invalid line !\n" << NO_COLOR;
+            isValid = false;
+        }
+
+        // Check if the column is within the frame limits
+        if (position.col < 'a' || position.col >= ('a' + board.numCols)) {
+            cout << RED << "Invalid column !\n" << NO_COLOR;
+            isValid = false;
+        }
+
+        // Check if the direction is 'H' or 'V'
+        if (position.dir != 'H' && position.dir != 'V') {
+            cout << RED << "Invalid direction !\n" << NO_COLOR;
+            isValid = false;
+        }
+
+        if (!isValid) {
+            continue;  // Return to the beginning of the loop for new valid input
+        }
+
+        cout << "Word ? ";
+        cin >> word.word;
+        word.pos = position;
+        board.wordsOnBoard.push_back(word);
+
+        showBoard(board);
+    }
 }
 
 
@@ -188,11 +229,29 @@ bool readBoardSize(int numLins, int numCols) {
 }
 
 //================================================================================
+// Read option of the user
+char readOption() {
+    char option;
+    cout << "H - Help \nI - Insert words \nR - Remove words \nE - Exit \nOption? \n\n";
+    cin >> option;
+    return option;
+}
+
+//================================================================================
+void showHelp() {
+    cout << "H - Help\nI - Insert words\nR - Remove words\nE - Exit\n";
+}
+
+//================================================================================
+void removeWords(Board& board) {
+    // To do
+}
+
+//================================================================================
 //================================================================================
 //================================================================================
 int main() 
 {
-    cout << "Hello world from Valentina";
     cout << "WORD GAMES - BOARD MAKER\n\n";
 
     WordList availableWords;
@@ -201,6 +260,7 @@ int main()
     if (numWords > 0) 
     {
         int numLins, numCols;
+        cout << "Board size (lines columns) ?\n\n";
         bool validBoardSize = readBoardSize(numLins, numCols); //Create function to read the board size
 
         if (validBoardSize) 
