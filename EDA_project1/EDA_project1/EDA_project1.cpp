@@ -12,6 +12,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 //... other include directives 
 
 //-------------------------------------------------------------------------------- 
@@ -111,7 +112,7 @@ void initBoard(Board& board, int numLins, int numCols)
 // The line and column identifying letters are colored in red 
 void showBoard(const Board& b) 
 {
-    cout << endl;
+    cout << "\n\n";
     cout << RED << "  ";
     for (size_t j = 0; j < b.boardCells.at(0).size(); j++)
         cout << (char)('a' + j) << ' ';
@@ -145,53 +146,92 @@ bool getBoardLin(const Board& board, char lin, string& linContents)
 
 
 //================================================================================
-void insertWords(Board& board, const WordList& wordList) {
+void insertWords(Board& board, const WordList& wordList) 
+{
     WordPosition position;
     WordOnBoard word;
 
-    cout << "INSERTING WORDS ...\n\n";
+    cout << "\nINSERTING WORDS ...\n\n";
     showBoard(board);
 
-    while (true) {
-        cout << "Position(LcD / STOP) ? ";
+    while (true) 
+    {
+        cout << "\nPosition(LcD / STOP) ? ";
         cin >> position.lin >> position.col >> position.dir;
 
-        if (position.lin == 'STOP')
+        if (position.lin == 'STOP') 
+        {
             break;
+        }
 
         bool isValid = true;  // Variable to check the validity of the position
 
-        // Check if the line is within the frame boundaries
-        if (position.lin < 'A' || position.lin >= ('A' + board.numLins)) {
-            cout << RED << "Invalid line !\n" << NO_COLOR;
+        // Convert row (lin) and column (col) to uppercase
+        position.lin = toupper(position.lin);
+        position.col = toupper(position.col);
+
+        // Check if the line is within limits
+        if (position.lin < 'A' || position.lin >= ('A' + board.numLins)) 
+        {
+            cout << RED << "Invalid line!\n" << NO_COLOR;
             isValid = false;
         }
 
-        // Check if the column is within the frame limits
-        if (position.col < 'a' || position.col >= ('a' + board.numCols)) {
-            cout << RED << "Invalid column !\n" << NO_COLOR;
+        // Check if the column is within limits
+        if (position.col < 'A' || position.col >= ('A' + board.numCols)) 
+        {
+            cout << RED << "Invalid column!\n" << NO_COLOR;
             isValid = false;
         }
 
         // Check if the direction is 'H' or 'V'
-        if (position.dir != 'H' && position.dir != 'V') {
-            cout << RED << "Invalid direction !\n" << NO_COLOR;
+        if (position.dir != 'H' && position.dir != 'V') 
+        {
+            cout << RED << "Invalid direction!\n" << NO_COLOR;
             isValid = false;
         }
 
-        if (!isValid) {
-            continue;  // Return to the beginning of the loop for new valid input
+        if (!isValid) 
+        {
+            continue;  // Return to beginning of loop for new valid input
         }
 
         cout << "Word ? ";
         cin >> word.word;
+
+        // Convert the word to capital letters
+        toupperStr(word.word);
+
+        // Check if it is possible to insert the word in the chosen position
+        // (implement this check)
+
+        // Add the word to the board
         word.pos = position;
         board.wordsOnBoard.push_back(word);
+
+        // Update the board cells with the entered word
+        int linInt = position.lin - 'A';
+        int colInt = position.col - 'A';
+        if (position.dir == 'H') 
+        {
+            for (char c : word.word) 
+            {
+                board.boardCells[linInt][colInt] = c;
+                colInt++;
+            }
+        }
+        else if (position.dir == 'V') 
+        {
+            for (char c : word.word) 
+            {
+                board.boardCells[linInt][colInt] = c;
+                linInt++;
+            }
+        }
 
         showBoard(board);
     }
 }
-
 
 //================================================================================
 // Saves ‘board’ into a text file 
@@ -202,27 +242,38 @@ void saveBoard(const Board& board)
 
 //================================================================================
 //read the word list
-void readWordList(string fileName)
+int readWordList(WordList availableWords)
 {
     string fileName;
-    cout << "Please input the file name (including the extension)." << endl;
+    cout << "Please input the file name (including the extension):" << endl;
     cin >> fileName;
 
-    inStream.open(fileName);
+    ifstream inStream(fileName);
 
     if (inStream.fail())
     {
         cerr << "Error openning" << fileName << "\n";
+        return 0;
     }
+
+    string word;
+    while (inStream >> word) {
+        availableWords.push_back(word);  
+    }
+
+    return availableWords.size();
 }
 
 //================================================================================
 // Read the board size and return if it is in the range 
-bool readBoardSize(int numLins, int numCols) {
-    if (numLins > 6 && numLins < 16 && numCols > 6 && numCols < 16) {
+bool readBoardSize(int numLins, int numCols) 
+{
+    if (numLins > 6 && numLins < 16 && numCols > 6 && numCols < 16) 
+    {
         return true;
     }
-    else {
+    else 
+    {
         cout << RED << "Invalid size! Choose a size in the 7 - 15 range " << NO_COLOR;
         return false;
     }
@@ -230,20 +281,23 @@ bool readBoardSize(int numLins, int numCols) {
 
 //================================================================================
 // Read option of the user
-char readOption() {
+char readOption() 
+{
     char option;
-    cout << "H - Help \nI - Insert words \nR - Remove words \nE - Exit \nOption? \n\n";
+    cout << "\n\nH - Help \nI - Insert words \nR - Remove words \nE - Exit \nOption? ";
     cin >> option;
     return option;
 }
 
 //================================================================================
-void showHelp() {
-    cout << "H - Help\nI - Insert words\nR - Remove words\nE - Exit\n";
+void showHelp() 
+{
+    // To do
 }
 
 //================================================================================
-void removeWords(Board& board) {
+void removeWords(Board& board) 
+{
     // To do
 }
 
@@ -255,13 +309,14 @@ int main()
     cout << "WORD GAMES - BOARD MAKER\n\n";
 
     WordList availableWords;
-    unsigned numWords = readWordList(availableWords); //Create function to read the word list
+    unsigned numWords = readWordList(availableWords); 
 
     if (numWords > 0) 
     {
         int numLins, numCols;
-        cout << "Board size (lines columns) ?\n\n";
-        bool validBoardSize = readBoardSize(numLins, numCols); //Create function to read the board size
+        cout << "Board size (lines columns) ? ";
+        cin >> numLins >> numCols;
+        bool validBoardSize = readBoardSize(numLins, numCols); 
 
         if (validBoardSize) 
         {
@@ -271,7 +326,7 @@ int main()
 
             do 
             {
-                char option = readOption(); //Create function to read the option of user
+                char option = readOption(); 
                 switch (option) 
                 {
                 case 'H':
