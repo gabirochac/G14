@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
-//... other include directives 
+#include <algorithm> //if(binary_search(word.begin(),wordList.end(),Word)) {cout<<"Found\n"}; else {cout<<"Not found\n"};
 
 //-------------------------------------------------------------------------------- 
 using namespace std;
@@ -79,7 +79,6 @@ typedef vector<string> WordList;
 
 //================================================================================
 // HELP FUNCTIONS 
-
 //================================================================================
 // Converts all characters of ‘s’ to lowercase 
 void tolowerStr(string& s) {
@@ -144,12 +143,26 @@ bool getBoardLin(const Board& board, char lin, string& linContents)
     return true;
 }
 
+//================================================================================
+// Verify if the word is in the list 
+bool isWordInList(string word, WordList availableWords)
+{
+    for (string validWord : availableWords)
+    {
+        if (word == validWord)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 
 //================================================================================
-void insertWords(Board& board, const WordList& wordList) 
+void insertWords(Board board, WordList availableWords)
 {
     WordPosition position;
     WordOnBoard word;
+    string inserting; //Variable to STOP
 
     cout << "\nINSERTING WORDS ...\n\n";
     showBoard(board);
@@ -157,14 +170,19 @@ void insertWords(Board& board, const WordList& wordList)
     while (true) 
     {
         cout << "\nPosition(LcD / STOP) ? ";
-        cin >> position.lin >> position.col >> position.dir;
+        cin >> inserting;
 
-        if (position.lin == 'STOP') 
+        if (inserting == "STOP") 
         {
             break;
         }
 
         bool isValid = true;  // Variable to check the validity of the position
+
+        //Convert string to WordPosition
+        position.lin = inserting[0];
+        position.col = inserting[1];
+        position.dir = inserting[2];
 
         // Convert row (lin) and column (col) to uppercase
         position.lin = toupper(position.lin);
@@ -199,7 +217,19 @@ void insertWords(Board& board, const WordList& wordList)
         cout << "Word ? ";
         cin >> word.word;
 
-        // Convert the word to capital letters
+        // Convert the word to lower
+        tolowerStr(word.word);
+
+        cout << word.word;
+
+        // Check if the word is in the list
+        if (!isWordInList(word.word, availableWords))
+        {
+            cout << RED << "\nCould not put word on board !" << NO_COLOR;
+            continue;
+        }
+
+        // Convert the word to upper
         toupperStr(word.word);
 
         // Check if it is possible to insert the word in the chosen position
@@ -237,7 +267,7 @@ void insertWords(Board& board, const WordList& wordList)
 // Saves ‘board’ into a text file 
 void saveBoard(const Board& board) 
 {
-    // ... 
+    // To do
 }
 
 //================================================================================
