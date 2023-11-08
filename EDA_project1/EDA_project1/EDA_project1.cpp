@@ -145,9 +145,10 @@ bool getBoardLin(const Board& board, char lin, string& linContents)
 
 //================================================================================
 // Verify if the word is in the list 
-bool isWordInList(string word, WordList availableWords)
+bool isWordInList(const string word, WordList availableWords)
 {
-    for (string validWord : availableWords)
+    cout << "O bloco 'isWordInList' foi acessado.\n";
+    for (const string validWord : availableWords)
     {
         if (word == validWord)
         {
@@ -220,11 +221,10 @@ void insertWords(Board board, WordList availableWords)
         // Convert the word to lower
         tolowerStr(word.word);
 
-        cout << word.word;
-
         // Check if the word is in the list
         if (!isWordInList(word.word, availableWords))
         {
+            cout << "O bloco 'if' foi acessado.\n";
             cout << RED << "\nCould not put word on board !" << NO_COLOR;
             continue;
         }
@@ -271,8 +271,8 @@ void saveBoard(const Board& board)
 }
 
 //================================================================================
-//read the word list
-int readWordList(WordList availableWords)
+// Read the word list and return the number of words
+int readWordList(WordList& availableWords)
 {
     string fileName;
     cout << "Please input the file name (including the extension):" << endl;
@@ -282,13 +282,14 @@ int readWordList(WordList availableWords)
 
     if (inStream.fail())
     {
-        cerr << "Error openning" << fileName << "\n";
+        cerr << "Error opening " << fileName << "\n";
         return 0;
     }
 
     string word;
-    while (inStream >> word) {
-        availableWords.push_back(word);  
+    while (inStream >> word)
+    {
+        availableWords.push_back(word);
     }
 
     return availableWords.size();
@@ -339,6 +340,7 @@ int main()
     cout << "WORD GAMES - BOARD MAKER\n\n";
 
     WordList availableWords;
+
     unsigned numWords = readWordList(availableWords); 
 
     if (numWords > 0) 

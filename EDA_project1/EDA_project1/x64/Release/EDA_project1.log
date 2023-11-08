@@ -1,0 +1,7 @@
+﻿  EDA_project1.cpp
+C:\Users\gabri\Desktop\G14\EDA_project1\EDA_project1\EDA_project1.cpp(293,31): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 418 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  EDA_project1.vcxproj -> C:\Users\gabri\Desktop\G14\EDA_project1\x64\Release\EDA_project1.exe
