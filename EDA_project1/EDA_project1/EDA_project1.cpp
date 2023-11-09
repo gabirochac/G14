@@ -147,7 +147,6 @@ bool getBoardLin(const Board& board, char lin, string& linContents)
 // Verify if the word is in the list 
 bool isWordInList(const string word, WordList availableWords)
 {
-    cout << "O bloco 'isWordInList' foi acessado.\n";
     for (const string validWord : availableWords)
     {
         if (word == validWord)
@@ -159,7 +158,51 @@ bool isWordInList(const string word, WordList availableWords)
 }
 
 //================================================================================
-void insertWords(Board board, WordList availableWords)
+// Check if it is possible to insert the word in the chosen position
+bool isInsertionPossible(const Board& board, const string word) {
+    int linInt = word.pos.lin - 'A';
+    int colInt = word.pos.col - 'A';
+
+    if (word.pos.dir == 'H') 
+    {
+        // Check if the word fits horizontally within the board boundaries
+        if (colInt + word.word.size() > board.numCols) 
+        {
+            return false; 
+        }
+
+        // Check if there are any conflicting words in the chosen position
+        for (int i = 0; i < word.word.size(); i++) 
+        {
+            if (board.boardCells[linInt][colInt + i] != '.' && board.boardCells[linInt][colInt + i] != word.word[i]) 
+            {
+                return false;
+            }
+        }
+    }
+    else if (word.pos.dir == 'V') 
+    {
+        // Check if the word fits vertically within the board boundaries
+        if (linInt + word.word.size() > board.numLins) 
+        {
+            return false;
+        }
+
+        // Check if there are any conflicting words in the chosen position
+        for (int i = 0; i < word.word.size(); i++) 
+        {
+            if (board.boardCells[linInt + i][colInt] != '.' && board.boardCells[linInt + i][colInt] != word.word[i]) 
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+//================================================================================
+void insertWords(Board& board, WordList& availableWords)
 {
     WordPosition position;
     WordOnBoard word;
@@ -221,8 +264,8 @@ void insertWords(Board board, WordList availableWords)
         // Convert the word to lower
         tolowerStr(word.word);
 
-        // Check if the word is in the list
-        if (!isWordInList(word.word, availableWords))
+        // Check if the word is in the list and if it is possible to insert the word in the chosen position
+        if (!isWordInList(word.word, availableWords) || !isInsertionPossible(board, word.word))
         {
             cout << "O bloco 'if' foi acessado.\n";
             cout << RED << "\nCould not put word on board !" << NO_COLOR;
@@ -231,9 +274,6 @@ void insertWords(Board board, WordList availableWords)
 
         // Convert the word to upper
         toupperStr(word.word);
-
-        // Check if it is possible to insert the word in the chosen position
-        // (implement this check)
 
         // Add the word to the board
         word.pos = position;
@@ -297,7 +337,7 @@ int readWordList(WordList& availableWords)
 
 //================================================================================
 // Read the board size and return if it is in the range 
-bool readBoardSize(int numLins, int numCols) 
+bool readBoardSize(int& numLins, int& numCols) 
 {
     if (numLins > 6 && numLins < 16 && numCols > 6 && numCols < 16) 
     {

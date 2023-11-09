@@ -1,3 +1,22 @@
 ﻿  EDA_project1.cpp
-C:\Users\gabri\Desktop\G14\EDA_project1\EDA_project1\EDA_project1.cpp(295,31): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  EDA_project1.vcxproj -> C:\Users\gabri\Desktop\G14\EDA_project1\x64\Debug\EDA_project1.exe
+C:\Users\gabri\Desktop\G14\EDA_project1\EDA_project1\EDA_project1.cpp(163,23): error C2039: 'pos': is not a member of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\xstring(5119,29): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Users\gabri\Desktop\G14\EDA_project1\EDA_project1\EDA_project1.cpp(164,23): error C2039: 'pos': is not a member of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\xstring(5119,29): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Users\gabri\Desktop\G14\EDA_project1\EDA_project1\EDA_project1.cpp(166,14): error C2039: 'pos': is not a member of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\xstring(5119,29): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Users\gabri\Desktop\G14\EDA_project1\EDA_project1\EDA_project1.cpp(169,27): error C2039: 'word': is not a member of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\xstring(5119,29): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Users\gabri\Desktop\G14\EDA_project1\EDA_project1\EDA_project1.cpp(175,34): error C2039: 'word': is not a member of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\xstring(5119,29): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Users\gabri\Desktop\G14\EDA_project1\EDA_project1\EDA_project1.cpp(177,109): error C2039: 'word': is not a member of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\xstring(5119,29): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Users\gabri\Desktop\G14\EDA_project1\EDA_project1\EDA_project1.cpp(183,19): error C2039: 'pos': is not a member of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\xstring(5119,29): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Users\gabri\Desktop\G14\EDA_project1\EDA_project1\EDA_project1.cpp(186,27): error C2039: 'word': is not a member of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\xstring(5119,29): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Users\gabri\Desktop\G14\EDA_project1\EDA_project1\EDA_project1.cpp(192,34): error C2039: 'word': is not a member of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\xstring(5119,29): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Users\gabri\Desktop\G14\EDA_project1\EDA_project1\EDA_project1.cpp(194,109): error C2039: 'word': is not a member of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.37.32822\include\xstring(5119,29): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
+C:\Users\gabri\Desktop\G14\EDA_project1\EDA_project1\EDA_project1.cpp(335,31): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
