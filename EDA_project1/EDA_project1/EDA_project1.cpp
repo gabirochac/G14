@@ -159,39 +159,46 @@ bool isWordInList(const string word, WordList availableWords)
 
 //================================================================================
 // Check if it is possible to insert the word in the chosen position
-bool isInsertionPossible(const Board& board, const string word) {
-    int linInt = word.pos.lin - 'A';
-    int colInt = word.pos.col - 'A';
+bool isInsertionPossible(WordPosition& position, Board& board, const string& word) {
+    
+    int linInt = position.lin - 'A'; 
+    int colInt = position.col - 'a';
 
-    if (word.pos.dir == 'H') 
+    if (position.dir == 'H') 
     {
         // Check if the word fits horizontally within the board boundaries
-        if (colInt + word.word.size() > board.numCols) 
+        if (colInt + word.size() > board.numCols) 
         {
             return false; 
         }
 
         // Check if there are any conflicting words in the chosen position
-        for (int i = 0; i < word.word.size(); i++) 
+        for (int i = 0; i < word.size(); i++) 
         {
-            if (board.boardCells[linInt][colInt + i] != '.' && board.boardCells[linInt][colInt + i] != word.word[i]) 
+            char boardCell = board.boardCells[linInt + i][colInt];
+            char closeCell = board.boardCells[linInt - 1 + i][colInt - 1];
+
+            if (boardCell != '.' && boardCell != toupper(static_cast<char>(word[i])) && closeCell != '.')
             {
                 return false;
             }
         }
     }
-    else if (word.pos.dir == 'V') 
+    else if (position.dir == 'V') 
     {
         // Check if the word fits vertically within the board boundaries
-        if (linInt + word.word.size() > board.numLins) 
+        if (linInt + word.size() > board.numLins) 
         {
             return false;
         }
 
         // Check if there are any conflicting words in the chosen position
-        for (int i = 0; i < word.word.size(); i++) 
+        for (int i = 0; i < word.size(); i++) 
         {
-            if (board.boardCells[linInt + i][colInt] != '.' && board.boardCells[linInt + i][colInt] != word.word[i]) 
+            char boardCell = board.boardCells[linInt + i][colInt];
+            char closeCell = board.boardCells[linInt - 1 + i ][colInt - 1];
+
+            if (boardCell != '.' && boardCell != toupper(static_cast<char>(word[i])) && closeCell != '.')
             {
                 return false;
             }
@@ -223,31 +230,22 @@ void insertWords(Board& board, WordList& availableWords)
 
         bool isValid = true;  // Variable to check the validity of the position
 
-        //Convert string to WordPosition
-        position.lin = inserting[0];
-        position.col = inserting[1];
-        position.dir = inserting[2];
-
-        // Convert row (lin) and column (col) to uppercase
-        position.lin = toupper(position.lin);
-        position.col = toupper(position.col);
-
         // Check if the line is within limits
-        if (position.lin < 'A' || position.lin >= ('A' + board.numLins)) 
+        if (inserting[0] < 'A' || inserting[0] >= ('A' + board.numLins) || inserting[0] == tolower(inserting[0]))
         {
             cout << RED << "Invalid line!\n" << NO_COLOR;
             isValid = false;
         }
 
         // Check if the column is within limits
-        if (position.col < 'A' || position.col >= ('A' + board.numCols)) 
+        if (inserting[1] < 'a' || inserting[1] >= ('a' + board.numCols) || inserting[1] == toupper(inserting[1]))
         {
             cout << RED << "Invalid column!\n" << NO_COLOR;
             isValid = false;
         }
 
         // Check if the direction is 'H' or 'V'
-        if (position.dir != 'H' && position.dir != 'V') 
+        if (inserting[2] != 'H' && inserting[2] != 'V' || inserting[2] == tolower(inserting[2]))
         {
             cout << RED << "Invalid direction!\n" << NO_COLOR;
             isValid = false;
@@ -258,6 +256,11 @@ void insertWords(Board& board, WordList& availableWords)
             continue;  // Return to beginning of loop for new valid input
         }
 
+        //Convert string to WordPosition
+        position.lin = inserting[0];
+        position.col = inserting[1];
+        position.dir = inserting[2];
+
         cout << "Word ? ";
         cin >> word.word;
 
@@ -265,10 +268,9 @@ void insertWords(Board& board, WordList& availableWords)
         tolowerStr(word.word);
 
         // Check if the word is in the list and if it is possible to insert the word in the chosen position
-        if (!isWordInList(word.word, availableWords) || !isInsertionPossible(board, word.word))
+        if (!isWordInList(word.word, availableWords) || !isInsertionPossible(position, board, word.word))
         {
-            cout << "O bloco 'if' foi acessado.\n";
-            cout << RED << "\nCould not put word on board !" << NO_COLOR;
+            cout << RED << "Could not put word on board !" << NO_COLOR;
             continue;
         }
 
@@ -281,7 +283,7 @@ void insertWords(Board& board, WordList& availableWords)
 
         // Update the board cells with the entered word
         int linInt = position.lin - 'A';
-        int colInt = position.col - 'A';
+        int colInt = position.col - 'a';
         if (position.dir == 'H') 
         {
             for (char c : word.word) 
