@@ -365,7 +365,9 @@ char readOption()
 //================================================================================
 void showHelp() 
 {
-    // To do
+    cout << "HELP \n";
+    cout << "To choose the position you need to indicate as following (LcD): \n";
+    cout << "- Line: with an uppercase letter \n - Column: with a lowercase letter\n - H for horizontal or V for vertical";
 }
 
 //================================================================================
