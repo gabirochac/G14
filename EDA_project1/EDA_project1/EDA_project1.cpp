@@ -13,7 +13,8 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include <algorithm> //if(binary_search(word.begin(),wordList.end(),Word)) {cout<<"Found\n"}; else {cout<<"Not found\n"};
+#include <iomanip>
+#include <sstream>
 
 //-------------------------------------------------------------------------------- 
 using namespace std;
@@ -91,7 +92,8 @@ void tolowerStr(string& s) {
 // Converts all characters of ‘s’ to uppercase 
 void toupperStr(string& s) 
 {
-    for (auto& c : s) c = toupper(c);
+    for (auto& c : s) 
+        c = toupper(c);
 }
 
 
@@ -160,51 +162,39 @@ bool isWordInList(const string word, WordList availableWords)
 //================================================================================
 // Check if it is possible to insert the word in the chosen position
 bool isInsertionPossible(WordPosition& position, Board& board, const string& word) {
-    
-    int linInt = position.lin - 'A'; 
+    int linInt = position.lin - 'A';
     int colInt = position.col - 'a';
 
-    if (position.dir == 'H') 
-    {
+    if (position.dir == 'H') {
         // Check if the word fits horizontally within the board boundaries
-        if (colInt + word.size() > board.numCols) 
-        {
-            return false; 
-        }
-
-        // Check if there are any conflicting words in the chosen position
-        for (int i = 0; i < word.size(); i++) 
-        {
-            char boardCell = board.boardCells[linInt + i][colInt];
-            char closeCell = board.boardCells[linInt - 1 + i][colInt - 1];
-
-            if (boardCell != '.' && boardCell != toupper(static_cast<char>(word[i])) && closeCell != '.')
-            {
-                return false;
-            }
-        }
-    }
-    else if (position.dir == 'V') 
-    {
-        // Check if the word fits vertically within the board boundaries
-        if (linInt + word.size() > board.numLins) 
-        {
+        if (colInt + word.size() > board.numCols) {
             return false;
         }
 
-        // Check if there are any conflicting words in the chosen position
-        for (int i = 0; i < word.size(); i++) 
-        {
-            char boardCell = board.boardCells[linInt + i][colInt];
-            char closeCell = board.boardCells[linInt - 1 + i ][colInt - 1];
+        // Check for conflicts with existing letters horizontally
+        for (int i = 0; i < word.size(); i++) {
+            char boardCell = board.boardCells[linInt][colInt + i];
 
-            if (boardCell != '.' && boardCell != toupper(static_cast<char>(word[i])) && closeCell != '.')
-            {
+            if (boardCell != '.' && boardCell != toupper(static_cast<char>(word[i]))) {
                 return false;
             }
         }
     }
+    else if (position.dir == 'V') {
+        // Check if the word fits vertically within the board boundaries
+        if (linInt + word.size() > board.numLins) {
+            return false;
+        }
 
+        // Check for conflicts with existing letters vertically
+        for (int i = 0; i < word.size(); i++) {
+            char boardCell = board.boardCells[linInt + i][colInt];
+
+            if (boardCell != '.' && boardCell != toupper(static_cast<char>(word[i]))) {
+                return false;
+            }
+        }
+    }
     return true;
 }
 
@@ -263,10 +253,10 @@ void insertWords(Board& board, WordList& availableWords)
 
         cout << "Word ? ";
         cin >> word.word;
-
+        
         // Convert the word to lower
         tolowerStr(word.word);
-
+       
         // Check if the word is in the list and if it is possible to insert the word in the chosen position
         if (!isWordInList(word.word, availableWords) || !isInsertionPossible(position, board, word.word))
         {
@@ -303,13 +293,6 @@ void insertWords(Board& board, WordList& availableWords)
 
         showBoard(board);
     }
-}
-
-//================================================================================
-// Saves ‘board’ into a text file 
-void saveBoard(const Board& board) 
-{
-    // To do
 }
 
 //================================================================================
@@ -365,16 +348,57 @@ char readOption()
 //================================================================================
 void showHelp() 
 {
-    cout << "HELP \n";
-    cout << "To choose the position you need to indicate as following (LcD): \n";
-    cout << "- Line: with an uppercase letter \n - Column: with a lowercase letter\n - H for horizontal or V for vertical";
+    cout << BLUE << "\nHELP \n" << NO_COLOR;
+    cout << BLUE << "To choose the position you need to indicate as following (LcD): \n" << NO_COLOR;
+    cout << BLUE << "- Line: with an uppercase letter \n- Column: with a lowercase letter\n- H for horizontal or V for vertical" << NO_COLOR;
 }
 
 //================================================================================
-void removeWords(Board& board) 
+void removeWords(Board& board)
 {
-    // To do
+    string wordToRemove;
+
+    cout << "\nEnter the word you want to remove: ";
+    cin >> wordToRemove;
+
+    for (auto it = board.wordsOnBoard.begin(); it != board.wordsOnBoard.end(); ++it) {
+        if (it->word == wordToRemove) {
+            int linInt = it->pos.lin - 'A';
+            int colInt = it->pos.col - 'a';
+
+            for (int i = 0; i < it->word.size(); i++) {
+                char& boardCell = it->pos.dir == 'H' ? board.boardCells[linInt][colInt + i] : board.boardCells[linInt + i][colInt];
+
+                // Verifica se há outras palavras que compartilham a mesma letra
+                bool sharedLetter = false;
+                for (const auto& otherWord : board.wordsOnBoard) {
+                    if (&otherWord != &(*it) && i < otherWord.word.size()) {
+                        char otherCell = otherWord.pos.dir == 'H' ? board.boardCells[otherWord.pos.lin - 'A'][otherWord.pos.col - 'a' + i] : board.boardCells[otherWord.pos.lin - 'A' + i][otherWord.pos.col - 'a'];
+
+                        if (otherCell == it->word[i]) {
+                            sharedLetter = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Remove a letra apenas se não pertencer a outras palavras
+                if (!sharedLetter) {
+                    boardCell = '.';
+                }
+            }
+
+            // Remova a palavra da lista de palavras no quadro
+            board.wordsOnBoard.erase(it);
+
+            cout << GREEN << "Word '" << wordToRemove << "' removed from the board." << NO_COLOR << endl;
+            return;
+        }
+    }
+
+    cout << "Word '" << wordToRemove << "' not found on the board." << endl;
 }
+
 
 //================================================================================
 //================================================================================
