@@ -386,6 +386,7 @@ void removeWords(Board& board)
         if (it->word == wordToRemove) {
             int linInt = it->pos.lin - 'A';
             int colInt = it->pos.col - 'a';
+            cout << "Debug: " << linInt << endl;
 
             // Iterate through each letter of the word to update the board
             for (int i = 0; i < it->word.size(); i++) {
