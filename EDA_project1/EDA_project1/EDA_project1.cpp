@@ -13,7 +13,6 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include <iomanip>
 #include <sstream>
 
 //-------------------------------------------------------------------------------- 
@@ -56,30 +55,41 @@ using namespace std;
 //================================================================================ 
 // USER DEFINED TYPES
 //================================================================================ 
+
+// Represents the position of a word on the board: line, column, and direction (H or V)
 typedef struct {
     char lin;
     char col;
     char dir;
 } WordPosition;
+
 //-------------------------------------------------------------------------------- 
+
+// Represents a word on the board, including its position and the word itself
 typedef struct {
     WordPosition pos;
     string word;
 } WordOnBoard;
-//-------------------------------------------------------------------------------- 
-typedef struct {
-    vector<vector<char>> boardCells;
-    int numLins;
-    int numCols;
-    vector<WordOnBoard> wordsOnBoard;
-} Board;
-//--------------------------------------------------------------------------------
-typedef vector<string> WordList;
 
+//-------------------------------------------------------------------------------- 
+
+// Represents the game board, including the cells, dimensions, and words placed on it
+typedef struct {
+    vector<vector<char>> boardCells; // 2D vector representing the cells of the board
+    int numLins;                     // Number of lines in the board
+    int numCols;                     // Number of columns in the board
+    vector<WordOnBoard> wordsOnBoard; // List of words placed on the board
+} Board;
+
+//--------------------------------------------------------------------------------
+
+// Represents a list of words
+typedef vector<string> WordList;
 
 
 //================================================================================
 // HELP FUNCTIONS 
+// 
 //================================================================================
 // Converts all characters of ‘s’ to lowercase 
 void tolowerStr(string& s) {
@@ -303,35 +313,41 @@ int readWordList(WordList& availableWords)
     cout << "Please input the file name (including the extension):" << endl;
     cin >> fileName;
 
-    ifstream inStream(fileName);
+    ifstream inStream(fileName); // Open a file stream to read from the specified file
 
+    // Check if the file stream is in a fail state, indicating an error opening the file
     if (inStream.fail())
     {
-        cerr << "Error opening " << fileName << "\n";
-        return 0;
+        cerr << "Error opening " << fileName << "\n"; // Display an error message
+        return 0; // Return 0 to indicate failure (no words read)
     }
 
     string word;
+
+    // Read words from the file stream until the end of the file is reached
     while (inStream >> word)
     {
-        availableWords.push_back(word);
+        availableWords.push_back(word); // Add each word to the 'availableWords' vector
     }
 
-    return availableWords.size();
+    return availableWords.size(); // Return the number of words read from the file
 }
+
 
 //================================================================================
 // Read the board size and return if it is in the range 
-bool readBoardSize(int& numLins, int& numCols) 
+bool readBoardSize(int& numLins, int& numCols)
 {
-    if (numLins > 6 && numLins < 16 && numCols > 6 && numCols < 16) 
+    // Check if both the number of lines and columns are within the valid range (7 - 15)
+    if (numLins > 6 && numLins < 16 && numCols > 6 && numCols < 16)
     {
-        return true;
+        return true; // Size is valid, return true
     }
-    else 
+    else
     {
         cout << RED << "Invalid size! Choose a size in the 7 - 15 range " << NO_COLOR;
-        return false;
+        // Display an error message for an invalid size
+        return false; // Return false to indicate an invalid size
     }
 }
 
@@ -354,6 +370,7 @@ void showHelp()
 }
 
 //================================================================================
+// Removes a word from the board based on user input.
 void removeWords(Board& board)
 {
     string wordToRemove;
@@ -361,20 +378,28 @@ void removeWords(Board& board)
     cout << "\nEnter the word you want to remove: ";
     cin >> wordToRemove;
 
+    toupperStr(wordToRemove); // Convert the input word to uppercase for case-insensitive comparison
+
+    // Iterate through the words on the board to find the word to remove
     for (auto it = board.wordsOnBoard.begin(); it != board.wordsOnBoard.end(); ++it) {
+        // Check if the current word on the board matches the word to remove
         if (it->word == wordToRemove) {
             int linInt = it->pos.lin - 'A';
             int colInt = it->pos.col - 'a';
 
+            // Iterate through each letter of the word to update the board
             for (int i = 0; i < it->word.size(); i++) {
+                // Determine the board cell corresponding to the current letter of the word
                 char& boardCell = it->pos.dir == 'H' ? board.boardCells[linInt][colInt + i] : board.boardCells[linInt + i][colInt];
 
-                // Verifica se há outras palavras que compartilham a mesma letra
+                // Check if there are other words sharing the same letter at the current position
                 bool sharedLetter = false;
                 for (const auto& otherWord : board.wordsOnBoard) {
                     if (&otherWord != &(*it) && i < otherWord.word.size()) {
+                        // Determine the board cell of the other word at the same position
                         char otherCell = otherWord.pos.dir == 'H' ? board.boardCells[otherWord.pos.lin - 'A'][otherWord.pos.col - 'a' + i] : board.boardCells[otherWord.pos.lin - 'A' + i][otherWord.pos.col - 'a'];
 
+                        // Check if the other word shares the same letter at the current position
                         if (otherCell == it->word[i]) {
                             sharedLetter = true;
                             break;
@@ -382,23 +407,95 @@ void removeWords(Board& board)
                     }
                 }
 
-                // Remove a letra apenas se não pertencer a outras palavras
+                // Remove the letter only if it does not belong to other words
                 if (!sharedLetter) {
                     boardCell = '.';
                 }
             }
 
-            // Remova a palavra da lista de palavras no quadro
+            // Remove the word from the list of words on the board
             board.wordsOnBoard.erase(it);
 
             cout << GREEN << "Word '" << wordToRemove << "' removed from the board." << NO_COLOR << endl;
-            return;
+            return; // Exit the function after successfully removing the word
         }
     }
 
     cout << "Word '" << wordToRemove << "' not found on the board." << endl;
+    // Display a message if the specified word is not found on the board
 }
 
+
+//================================================================================
+// Saves ‘board’ into a text file 
+void saveBoard(const Board& board)
+{
+    // Read the current board number from the auxiliary file
+    int boardNumber;
+    ifstream boardNumFile("board_num.txt");
+    if (boardNumFile.is_open()) {
+        boardNumFile >> boardNumber;
+        boardNumFile.close();
+    }
+    else {
+        cerr << "Error opening board_num.txt for reading.\n";
+        return;
+    }
+
+    // Increment the board number for the next board
+    boardNumber++;
+
+    // Save the updated board number back to the auxiliary file
+    ofstream boardNumFileOut("board_num.txt");
+    if (boardNumFileOut.is_open()) {
+        boardNumFileOut << boardNumber;
+        boardNumFileOut.close();
+    }
+    else {
+        cerr << RED << "Error opening board_num.txt for writing.\n" << NO_COLOR;
+        return;
+    }
+
+    // Create the filename for the current board
+    string fileName = "b";
+    if (boardNumber < 10) {
+        fileName += "00";
+    }
+    else if (boardNumber < 100) {
+        fileName += "0";
+    }
+    fileName += to_string(boardNumber) + ".txt";
+
+    // Open a file for writing
+    ofstream outFile(fileName);
+
+    if (outFile.is_open()) // Check if the file is successfully opened
+    {
+        // Write board size to the file
+        outFile << board.numLins << " " << board.numCols << "\n";
+
+        // Write board cells to the file
+        for (size_t i = 0; i < board.boardCells.size(); i++)
+        {
+            for (size_t j = 0; j < board.boardCells.at(i).size(); j++)
+                outFile << board.boardCells.at(i).at(j) << ' ';
+            outFile << "\n";
+        }
+
+        // Write words on the board to the file
+        for (const auto& wordOnBoard : board.wordsOnBoard)
+        {
+            outFile << wordOnBoard.pos.lin << wordOnBoard.pos.col << wordOnBoard.pos.dir << " " << wordOnBoard.word << "\n";
+        }
+
+        outFile.close(); // Close the file
+        cout << GREEN << "Board saved to " << fileName << NO_COLOR << endl;
+    }
+    else
+    {
+        cerr << RED << "Error opening file for writing: " << fileName << "\n" << NO_COLOR;
+    }
+}
 
 //================================================================================
 //================================================================================
@@ -430,13 +527,13 @@ int main()
                 switch (option) 
                 {
                 case 'H':
-                    showHelp(); //Create function to show help
+                    showHelp();
                     break;
                 case 'I':
                     insertWords(board, availableWords);
                     break;
                 case 'R':
-                    removeWords(board); // possible improvement (Create function to remove words)
+                    removeWords(board); 
                     break;
                 case 'E':
                     endOfOperations = true;

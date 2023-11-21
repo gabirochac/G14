@@ -1,0 +1,16 @@
+Número de Linhas: 10
+Número de Colunas: 10
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . C O M P U T E R 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+M . . . . . . . . . 
+A . . . . . . . . . 
+N . . . . . . . . . 
+. . . . . . . . . . 
+
+Palavras Adicionadas:
+Palavra: COMPUTER | Posição: CcH
+Palavra: MAN | Posição: GaV
