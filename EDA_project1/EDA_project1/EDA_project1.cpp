@@ -156,6 +156,42 @@ bool getBoardLin(const Board& board, char lin, string& linContents)
 }
 
 //================================================================================
+// 
+WordPosition getCrossingPosition(const WordOnBoard& word1, const string word2) {
+    WordPosition crossingPosition;
+
+    // Inicializando com valores inválidos
+    crossingPosition.lin = '0';
+    crossingPosition.col = '0';
+    crossingPosition.dir = '0';
+
+    for (int i = 0; i < word1.word.size(); i++) {
+        for (int j = 0; j < word2.size(); j++) {
+            if (word1.word[i] == word2[j]) {
+                crossingPosition.lin = word1.pos.lin + (word1.pos.dir == 'V' ? i : 0);
+                crossingPosition.col = word1.pos.col + (word1.pos.dir == 'H' ? i : 0);
+                crossingPosition.dir = word1.pos.dir;
+                return crossingPosition;
+            }
+        }
+    }
+
+    return crossingPosition; 
+}
+
+//================================================================================
+//
+WordPosition newCrossingPositions(const vector<WordOnBoard>& wordsOnBoard, const string word) {
+    WordPosition crossingPosition;
+
+    for (size_t i = 0; i < wordsOnBoard.size(); i++) {
+        crossingPosition = getCrossingPosition(wordsOnBoard[i], word);
+    }
+
+    return crossingPosition;
+}
+
+//================================================================================
 // Verify if the word is in the list 
 bool isWordInList(const string word, WordList availableWords)
 {
@@ -175,6 +211,17 @@ bool isInsertionPossible(WordPosition& position, Board& board, const string& wor
     int linInt = position.lin - 'A';
     int colInt = position.col - 'a';
 
+
+    int crossLinInt = 0;
+    int crossColInt = 0;
+    if (board.wordsOnBoard.size() > 0) 
+    {
+        WordPosition cross = newCrossingPositions(board.wordsOnBoard, word);
+        crossLinInt = cross.lin - 'A';
+        crossColInt = cross.col - 'a';
+    }
+    
+
     if (position.dir == 'H') {
         // Check if the word fits horizontally within the board boundaries
         if (colInt + word.size() > board.numCols) {
@@ -184,8 +231,18 @@ bool isInsertionPossible(WordPosition& position, Board& board, const string& wor
         // Check for conflicts with existing letters horizontally
         for (int i = 0; i < word.size(); i++) {
             char boardCell = board.boardCells[linInt][colInt + i];
+            char closeCell = board.boardCells[linInt - 1][colInt + i - 1];
 
-            if (boardCell != '.' && boardCell != toupper(static_cast<char>(word[i]))) {
+            if ( (colInt - 1 + i) <= 0 || (linInt - 1) <= 0 || closeCell != '.')
+            {
+                if (crossColInt != (colInt + i))
+                {
+                    return false;
+                }
+            }
+
+            if (boardCell != '.' && boardCell != toupper(static_cast<char>(word[i]))) 
+            {
                 return false;
             }
         }
@@ -199,6 +256,18 @@ bool isInsertionPossible(WordPosition& position, Board& board, const string& wor
         // Check for conflicts with existing letters vertically
         for (int i = 0; i < word.size(); i++) {
             char boardCell = board.boardCells[linInt + i][colInt];
+            char leftCell = board.boardCells[linInt + i][colInt - 1]; 
+            char rightCell = board.boardCells[linInt + i][colInt + 1];
+
+            if ((linInt - 1 + i) <= 0 || (colInt - 1) <= 0 || (leftCell != '.' && rightCell != '.'))
+            {
+                if (crossLinInt != (linInt + i))
+                {
+                    cout << "Debug 1:" << crossLinInt << endl;
+                    cout << "Debug 2:" << linInt << endl;
+                    return false;
+                }
+            }
 
             if (boardCell != '.' && boardCell != toupper(static_cast<char>(word[i]))) {
                 return false;
@@ -386,7 +455,6 @@ void removeWords(Board& board)
         if (it->word == wordToRemove) {
             int linInt = it->pos.lin - 'A';
             int colInt = it->pos.col - 'a';
-            cout << "Debug: " << linInt << endl;
 
             // Iterate through each letter of the word to update the board
             for (int i = 0; i < it->word.size(); i++) {
